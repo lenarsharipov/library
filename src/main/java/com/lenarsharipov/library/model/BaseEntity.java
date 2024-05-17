@@ -24,6 +24,6 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     @JsonIgnore
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
 
 }
