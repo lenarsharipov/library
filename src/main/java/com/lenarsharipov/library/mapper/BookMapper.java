@@ -1,31 +1,23 @@
 package com.lenarsharipov.library.mapper;
 
-import com.lenarsharipov.library.model.book.Book;
-import com.lenarsharipov.library.model.book.ReadBookDto;
+import com.lenarsharipov.library.dto.book.BookDto;
+import com.lenarsharipov.library.model.Author;
+import com.lenarsharipov.library.model.Book;
 import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @UtilityClass
 public class BookMapper {
 
-    public static ReadBookDto toDto(Book book) {
-        return ReadBookDto.builder()
+    public static BookDto toDto(Book book) {
+        return BookDto.builder()
                 .id(book.getId())
                 .title(book.getTitle())
                 .isbn(book.getIsbn())
-                .authors(book.getAuthoredBooks().stream()
-                        .filter(ab -> ab.getAuthor() != null)
-                        .map(ab -> ab.getAuthor().getName())
-                        .collect(Collectors.toSet()))
+                .authors(book.getAuthors().stream()
+                        .map(Author::getName)
+                        .collect(toList()))
                 .build();
     }
-
-    public static List<ReadBookDto> toDto(List<Book> books) {
-        return books.stream()
-                .map(BookMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
 }

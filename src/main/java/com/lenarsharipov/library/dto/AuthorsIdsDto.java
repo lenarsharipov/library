@@ -1,4 +1,4 @@
-package com.lenarsharipov.library.model.author;
+package com.lenarsharipov.library.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -1,13 +1,13 @@
-package com.lenarsharipov.library.model.book;
+package com.lenarsharipov.library.dto.book;
 
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Builder
-public class ReadBookDto {
+public class BookDto {
 
     private Long id;
 
@@ -15,6 +15,5 @@ public class ReadBookDto {
 
     private String title;
 
-    private Set<String> authors;
-
+    private List<String> authors;
 }

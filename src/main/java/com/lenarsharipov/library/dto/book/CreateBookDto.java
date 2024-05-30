@@ -1,9 +1,8 @@
-package com.lenarsharipov.library.model.book;
+package com.lenarsharipov.library.dto.book;
 
 import com.lenarsharipov.library.validation.UniqueISBN;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import org.hibernate.validator.constraints.ISBN;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -15,7 +14,7 @@ public class CreateBookDto {
 
     @NotNull(message = "ISBN cannot be null")
     @UniqueISBN
-    @ISBN(message = "Illegal ISBN number")
+//    @ISBN(message = "Illegal ISBN number")
     private String isbn;
 
     @NotNull(message = "Title cannot be null")
@@ -27,5 +26,4 @@ public class CreateBookDto {
     @NotNull(message = "List of ids cannot be null")
     @UniqueElements(message = "List must contain only unique elements")
     private List<Long> authorsIds = new ArrayList<>();
-
 }

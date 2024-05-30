@@ -1,9 +1,10 @@
-package com.lenarsharipov.library.model.author;
+package com.lenarsharipov.library.dto.author;
 
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public record CreateAuthorDto(
+
         @NotNull(message = "Name cannot be null")
         @Length(min = 2,
                 max = 128,

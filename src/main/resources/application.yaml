@@ -10,3 +10,11 @@ spring:
     change-log: classpath:liquibase/db.changelog.yaml
     enabled: true
     default-schema: public
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+        max-page-size: 100
+        default-page-size: 1
+      sort:
+        sort-parameter: id

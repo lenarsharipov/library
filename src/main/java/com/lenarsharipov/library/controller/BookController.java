@@ -1,18 +1,19 @@
 package com.lenarsharipov.library.controller;
 
-import com.lenarsharipov.library.mapper.BookMapper;
-import com.lenarsharipov.library.model.book.Book;
-import com.lenarsharipov.library.model.book.CreateBookDto;
-import com.lenarsharipov.library.model.book.ReadBookDto;
-import com.lenarsharipov.library.model.book.UpdateBookDto;
+import com.lenarsharipov.library.dto.BookFiltersDto;
+import com.lenarsharipov.library.dto.book.AddBookAuthorDto;
+import com.lenarsharipov.library.dto.book.CreateBookDto;
+import com.lenarsharipov.library.dto.UpdateBookDto;
+import com.lenarsharipov.library.dto.book.BookDto;
+import com.lenarsharipov.library.dto.page.PageBookDto;
 import com.lenarsharipov.library.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -22,42 +23,39 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public ResponseEntity<ReadBookDto> create(@Valid @RequestBody CreateBookDto dto) {
-        Book createdBook = bookService.create(dto);
-        return ResponseEntity.ok(BookMapper.toDto(createdBook));
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDto create(@Valid @RequestBody CreateBookDto dto) {
+        return bookService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReadBookDto> update(@PathVariable Long id,
-                                              @Valid @RequestBody UpdateBookDto dto) {
-        Book updatedBook = bookService.update(id, dto);
-        ReadBookDto readBookDto = BookMapper.toDto(updatedBook);
-        return ResponseEntity.ok(readBookDto);
-
+    public BookDto update(@PathVariable Long id,
+                          @Valid @RequestBody UpdateBookDto dto) {
+        return bookService.update(id, dto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReadBookDto> getById(@PathVariable Long id) {
-        Book persistedBook = bookService.getById(id);
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(BookMapper.toDto(persistedBook));
+    @PostMapping("/{id}/authors")
+    public BookDto addAuthor(@PathVariable Long id,
+                            @Valid @RequestBody AddBookAuthorDto dto) {
+        return bookService.addAuthor(id, dto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ReadBookDto>> getAllSortedBy(@RequestParam String sortBy) {
-        List<Book> persistedBooks = bookService.getAllBy(sortBy);
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(BookMapper.toDto(persistedBooks));
+    @DeleteMapping("/{bookId}/authors/{authorId}")
+    public BookDto deleteAuthor(@PathVariable Long bookId,
+                             @PathVariable Long authorId) {
+        return bookService.deleteAuthor(bookId, authorId);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
         bookService.delete(id);
-        return ResponseEntity
-                .noContent()
-                .build();
     }
 
+    @GetMapping("/search")
+    public PageBookDto search(BookFiltersDto filters,
+                              @PageableDefault(direction = Sort.Direction.ASC)
+                              Pageable pageable) {
+        return bookService.search(filters, pageable);
+    }
 }

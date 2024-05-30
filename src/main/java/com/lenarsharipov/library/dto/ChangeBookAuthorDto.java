@@ -1,4 +1,4 @@
-package com.lenarsharipov.library.model.book;
+package com.lenarsharipov.library.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
